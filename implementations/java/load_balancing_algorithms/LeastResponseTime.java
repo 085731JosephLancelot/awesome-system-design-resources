@@ -27,6 +27,9 @@ public class LeastResponseTime {
 
     public void updateResponseTime(String server, double responseTime) {
         int index = servers.indexOf(server);
+        if (index == -1) {
+            throw new IllegalArgumentException("Unknown server: " + server);
+        }
         responseTimes.set(index, responseTime);
     }
 
