@@ -4,6 +4,9 @@ import java.util.List;
  * Weighted Round Robin Load Balancer
  * Higher weight = more requests routed to that server.
  * Example: weights [5, 1, 1] means Server1 gets ~5/7 of requests.
+ *
+ * Note: This uses the classic Nginx-style weighted round robin algorithm.
+ * The cycle length equals the max weight, not the sum of weights.
  */
 public class WeightedRoundRobin {
     private List<String> servers;
@@ -14,6 +17,10 @@ public class WeightedRoundRobin {
     public WeightedRoundRobin(List<String> servers, List<Integer> weights) {
         if (servers.size() != weights.size()) {
             throw new IllegalArgumentException("Servers and weights lists must be the same size");
+        }
+        // Validate that no weight is zero or negative
+        if (weights.stream().anyMatch(w -> w <= 0)) {
+            throw new IllegalArgumentException("All weights must be positive integers");
         }
         this.servers = servers;
         this.weights = weights;
