@@ -1,5 +1,10 @@
 import java.util.List;
 
+/**
+ * Weighted Round Robin Load Balancer
+ * Higher weight = more requests routed to that server.
+ * Example: weights [5, 1, 1] means Server1 gets ~5/7 of requests.
+ */
 public class WeightedRoundRobin {
     private List<String> servers;
     private List<Integer> weights;
@@ -7,6 +12,9 @@ public class WeightedRoundRobin {
     private int currentWeight;
 
     public WeightedRoundRobin(List<String> servers, List<Integer> weights) {
+        if (servers.size() != weights.size()) {
+            throw new IllegalArgumentException("Servers and weights lists must be the same size");
+        }
         this.servers = servers;
         this.weights = weights;
         this.currentIndex = -1;
@@ -37,6 +45,7 @@ public class WeightedRoundRobin {
         List<Integer> weights = List.of(5, 1, 1);
         WeightedRoundRobin weightedRoundRobinLB = new WeightedRoundRobin(servers, weights);
 
+        // Print 7 requests to verify distribution matches weights (5:1:1)
         for (int i = 0; i < 7; i++) {
             System.out.println(weightedRoundRobinLB.getNextServer());
         }
