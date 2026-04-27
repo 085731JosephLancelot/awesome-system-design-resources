@@ -35,8 +35,9 @@ public class LeastResponseTime {
 
     public static double simulateResponseTime(String server) {
         // Simulating response time with random delay
-        // Note: using a fixed seed for reproducible results during testing
-        Random random = new Random(42);
+        // Using a non-fixed seed so each run produces different response times,
+        // which better demonstrates how the algorithm adapts over time.
+        Random random = new Random();
         double delay = 0.1 + (1.0 - 0.1) * random.nextDouble();
         try {
             Thread.sleep((long) (delay * 1000));
