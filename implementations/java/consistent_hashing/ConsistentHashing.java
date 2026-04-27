@@ -9,6 +9,14 @@ public class ConsistentHashing {
     private final TreeMap<Long, String> ring; // Hash ring storing virtual nodes
     private final Set<String> servers; // Set of physical servers
 
+    // Note: Higher numReplicas = more even distribution but more memory usage.
+    // 150 virtual nodes is a commonly recommended default in production systems.
+    private static final int DEFAULT_REPLICAS = 150;
+
+    public ConsistentHashing(List<String> servers) {
+        this(servers, DEFAULT_REPLICAS);
+    }
+
     public ConsistentHashing(List<String> servers, int numReplicas) {
         this.numReplicas = numReplicas;
         this.ring = new TreeMap<>();
@@ -83,4 +91,3 @@ public class ConsistentHashing {
         System.out.println("UserB is now assigned to: " + ch.getServer("UserB"));
     }
 }
-
