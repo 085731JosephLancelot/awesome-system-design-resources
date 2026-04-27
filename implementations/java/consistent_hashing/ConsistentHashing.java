@@ -11,6 +11,8 @@ public class ConsistentHashing {
 
     // Note: Higher numReplicas = more even distribution but more memory usage.
     // 150 virtual nodes is a commonly recommended default in production systems.
+    // I've seen some sources recommend as low as 100 or as high as 200 depending
+    // on cluster size — keeping 150 as a reasonable middle ground here.
     private static final int DEFAULT_REPLICAS = 150;
 
     public ConsistentHashing(List<String> servers) {
@@ -18,6 +20,9 @@ public class ConsistentHashing {
     }
 
     public ConsistentHashing(List<String> servers, int numReplicas) {
+        if (numReplicas <= 0) {
+            throw new IllegalArgumentException("numReplicas must be greater than 0");
+        }
         this.numReplicas = numReplicas;
         this.ring = new TreeMap<>();
         this.servers = new HashSet<>();
@@ -82,12 +87,4 @@ public class ConsistentHashing {
         System.out.println("UserA is assigned to: " + ch.getServer("UserA"));
         System.out.println("UserB is assigned to: " + ch.getServer("UserB"));
 
-        // Step 3: Add a new server dynamically
-        ch.addServer("S6");
-        System.out.println("UserA is now assigned to: " + ch.getServer("UserA"));
-
-        // Step 4: Remove a server dynamically
-        ch.removeServer("S2");
-        System.out.println("UserB is now assigned to: " + ch.getServer("UserB"));
-    }
-}
+        // Step 
