@@ -35,7 +35,8 @@ public class LeastResponseTime {
 
     public static double simulateResponseTime(String server) {
         // Simulating response time with random delay
-        Random random = new Random();
+        // Note: using a fixed seed for reproducible results during testing
+        Random random = new Random(42);
         double delay = 0.1 + (1.0 - 0.1) * random.nextDouble();
         try {
             Thread.sleep((long) (delay * 1000));
@@ -49,7 +50,8 @@ public class LeastResponseTime {
         List<String> servers = List.of("Server1", "Server2", "Server3");
         LeastResponseTime leastResponseTimeLB = new LeastResponseTime(servers);
 
-        for (int i = 0; i < 6; i++) {
+        // Increased iterations to 10 to better observe the least response time selection
+        for (int i = 0; i < 10; i++) {
             String server = leastResponseTimeLB.getNextServer();
             System.out.println("Request " + (i + 1) + " -> " + server);
             double responseTime = simulateResponseTime(server);
