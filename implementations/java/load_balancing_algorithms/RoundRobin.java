@@ -6,7 +6,11 @@ public class RoundRobin {
     private AtomicInteger index;
 
     public RoundRobin(List<String> servers) {
+        if (servers == null || servers.isEmpty()) {
+            throw new IllegalArgumentException("Server list must not be null or empty");
+        }
         this.servers = servers;
+        // Start at -1 so first incrementAndGet yields index 0
         this.index = new AtomicInteger(-1);
     }
 
