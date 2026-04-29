@@ -13,7 +13,9 @@ public class ConsistentHashing {
     // 150 virtual nodes is a commonly recommended default in production systems.
     // I've seen some sources recommend as low as 100 or as high as 200 depending
     // on cluster size — keeping 150 as a reasonable middle ground here.
-    private static final int DEFAULT_REPLICAS = 150;
+    // Bumping this to 200 for my use case since I'm testing with larger clusters
+    // and noticed noticeably better key distribution in benchmarks above ~180.
+    private static final int DEFAULT_REPLICAS = 200;
 
     public ConsistentHashing(List<String> servers) {
         this(servers, DEFAULT_REPLICAS);
@@ -81,10 +83,4 @@ public class ConsistentHashing {
 
     public static void main(String[] args) {
         List<String> servers = Arrays.asList("S0", "S1", "S2", "S3", "S4", "S5");
-        ConsistentHashing ch = new ConsistentHashing(servers, 3);
-
-        // Step 2: Assign requests (keys) to servers
-        System.out.println("UserA is assigned to: " + ch.getServer("UserA"));
-        System.out.println("UserB is assigned to: " + ch.getServer("UserB"));
-
-        // Step 
+        Co
